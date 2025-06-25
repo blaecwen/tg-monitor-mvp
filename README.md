@@ -8,47 +8,35 @@ A simple example script `hello.py` demonstrates sending a `"Hello, Telegram!"` m
 
 ### Usage
 
-Below are example commands for **Bash** and **Fish** shells.
+First, run the setup script to create a virtual environment and install the required packages:
 
-#### Bash
+```shell
+sh setup.sh
+```
 
-1. Create and activate a virtual environment (optional but recommended):
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate
-   ```
-   Then install dependencies:
-   ```bash
-   pip install telethon
-   ```
-2. Obtain your `API_ID` and `API_HASH` from [my.telegram.org](https://my.telegram.org) and set them as environment variables:
-   ```bash
-   export API_ID=12345
-   export API_HASH=your_api_hash
-   ```
-3. Run the script:
-   ```bash
-   python hello.py
-   ```
+After installation, activate the virtual environment. If you use **Bash** run:
 
-#### Fish
+```bash
+source .venv/bin/activate
+```
 
-1. Create and activate a virtual environment:
-   ```fish
-   python -m venv .venv
-   source .venv/bin/activate.fish
-   ```
-   Then install dependencies:
-   ```fish
-   pip install telethon
-   ```
-2. Set your credentials as universal variables:
-   ```fish
-   set -x API_ID 12345
-   set -x API_HASH your_api_hash
-   ```
-3. Run the script:
-   ```fish
-   python hello.py
-   ```
-   You will be prompted to log in on first run. Afterwards a message is sent to your **Saved Messages**.
+For **Fish** run:
+
+```fish
+source .venv/bin/activate.fish
+```
+
+Next, obtain your `API_ID` and `API_HASH` from [my.telegram.org](https://my.telegram.org) and set them as environment variables:
+
+```shell
+export API_ID=12345
+export API_HASH=your_api_hash
+```
+
+Finally, run the example script:
+
+```shell
+python hello.py
+```
+
+You will be prompted to log in on the first run. Afterwards a message is sent to your **Saved Messages**.
