@@ -8,6 +8,10 @@ A simple example script `hello.py` demonstrates sending a `"Hello, Telegram!"` m
 
 ### Usage
 
+Below are example commands for **Bash** and **Fish** shells.
+
+#### Bash
+
 1. Create and activate a virtual environment (optional but recommended):
    ```bash
    python -m venv .venv
@@ -24,6 +28,27 @@ A simple example script `hello.py` demonstrates sending a `"Hello, Telegram!"` m
    ```
 3. Run the script:
    ```bash
+   python hello.py
+   ```
+
+#### Fish
+
+1. Create and activate a virtual environment:
+   ```fish
+   python -m venv .venv
+   source .venv/bin/activate.fish
+   ```
+   Then install dependencies:
+   ```fish
+   pip install telethon
+   ```
+2. Set your credentials as universal variables:
+   ```fish
+   set -x API_ID 12345
+   set -x API_HASH your_api_hash
+   ```
+3. Run the script:
+   ```fish
    python hello.py
    ```
    You will be prompted to log in on first run. Afterwards a message is sent to your **Saved Messages**.
