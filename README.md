@@ -1,6 +1,6 @@
 # tg-monitor-mvp
 
-This project provides a minimal Telegram monitoring server built with [Telethon](https://github.com/LonamiWebs/Telethon). It watches one public chat defined in `config.json` and forwards new messages to a pluggable handler.
+This project provides a minimal Telegram monitoring server built with [Telethon](https://github.com/LonamiWebs/Telethon). It watches the public chats listed in `config.json` and forwards new messages to a pluggable handler.
 
 The default handler simply prints messages to stdout. Messages from the same chat are processed in the order they arrive, batching any new ones while a previous batch is handled.
 
@@ -35,4 +35,4 @@ Start the monitoring server:
 python server.py
 ```
 
-The server is non‑interactive. It will exit with an error if required configuration is missing.
+The server is non‑interactive. It prints errors to stderr when a configured chat is not found and skips it. If no valid chats remain, the server exits with an error.

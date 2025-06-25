@@ -16,6 +16,12 @@ class ChatMonitor:
         self._processing = False
 
     async def start(self) -> None:
+        # Ensure the chat exists before registering the event handler
+        try:
+            await self.client.get_entity(self.chat)
+        except Exception as exc:  # pragma: no cover - runtime validation
+            raise ValueError(f"Chat '{self.chat}' not found") from exc
+
         @self.client.on(events.NewMessage(chats=self.chat))
         async def _(event: events.NewMessage.Event) -> None:  # pragma: no cover - simple callback
             self._queue.append(event.message)

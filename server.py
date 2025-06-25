@@ -1,5 +1,6 @@
 from pathlib import Path
 import asyncio
+import sys
 from telethon import TelegramClient
 from dotenv import load_dotenv
 
@@ -17,10 +18,24 @@ async def main() -> None:
 
     async with client:
         if not config.chats:
-            raise RuntimeError("No chats configured")
-        monitor = ChatMonitor(client, config.chats[0], handler)
-        await monitor.start()
-        print(f"Monitoring chat: {config.chats[0]}")
+            print("Error: no chats configured", file=sys.stderr)
+            return
+
+        monitors = []
+        for chat in config.chats:
+            try:
+                monitor = ChatMonitor(client, chat, handler)
+                await monitor.start()
+            except ValueError as exc:
+                print(f"Error: {exc}", file=sys.stderr)
+                continue
+            monitors.append(monitor)
+            print(f"Monitoring chat: {chat}")
+
+        if not monitors:
+            print("Error: no valid chats to monitor", file=sys.stderr)
+            return
+
         await client.run_until_disconnected()
 
 
