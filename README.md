@@ -1,6 +1,6 @@
 # tg-monitor-mvp
 
-This repository includes small experiments with Telegram using [Telethon](https://github.com/LonamiWebs/Telethon).
+This repository contains the initial building blocks for a future Telegram monitoring server. It currently includes small experiments with [Telethon](https://github.com/LonamiWebs/Telethon).
 
 ## Hello Telethon
 
@@ -39,7 +39,7 @@ API_ID=12345
 API_HASH=your_api_hash
 ```
 
-The example script automatically loads these variables from `.env` when run.
+The example script automatically loads these variables from `.env` when run. It will exit with an error if either value is missing.
 
 Finally, run the example script:
 
@@ -47,4 +47,4 @@ Finally, run the example script:
 python hello.py
 ```
 
-You will be prompted to log in on the first run. Afterwards a message is sent to your **Saved Messages**.
+The script itself is non-interactive. Telethon may still prompt you to sign in on first use. Afterwards a message is sent to your **Saved Messages**.
