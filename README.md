@@ -26,12 +26,20 @@ For **Fish** run:
 source .venv/bin/activate.fish
 ```
 
-Next, obtain your `API_ID` and `API_HASH` from [my.telegram.org](https://my.telegram.org) and set them as environment variables:
+Next, obtain your `API_ID` and `API_HASH` from [my.telegram.org](https://my.telegram.org) and store them in a `.env` file. Start by copying the example:
 
 ```shell
-export API_ID=12345
-export API_HASH=your_api_hash
+cp .env.example .env
 ```
+
+Edit `.env` and fill in your credentials:
+
+```env
+API_ID=12345
+API_HASH=your_api_hash
+```
+
+The example script automatically loads these variables from `.env` when run.
 
 Finally, run the example script:
 

@@ -1,6 +1,11 @@
 from getpass import getpass
 import os
+from pathlib import Path
 from telethon import TelegramClient
+from dotenv import load_dotenv
+
+# Load environment variables from a .env file if present
+load_dotenv(Path('.') / '.env')
 
 api_id = os.environ.get('API_ID')
 if api_id is None:
