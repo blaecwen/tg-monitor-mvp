@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This repository is an early exploration of a Telegram monitoring server built with Telethon. It uses a Python script `hello.py` to send a sample message. The project expects API credentials in a `.env` file and must remain non-interactive.
+This repository hosts a minimal Telegram monitoring server built with Telethon. The legacy `hello.py` example has been replaced by a small server (`server.py`) that watches configured public chats and passes new messages to a pluggable handler. API credentials are still loaded from a `.env` file and the application must remain non-interactive.
 
 ## Guidelines for contributors and Codex agents
 
