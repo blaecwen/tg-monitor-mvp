@@ -55,6 +55,7 @@ class GPTLoggingHandler(BaseMessageHandler):
 
         for m in messages:
             result = await process_text_with_gpt(m.text or "")
+            m.gpt_result = result
             record = {
                 "chat": chat,
                 "message_id": m.id,

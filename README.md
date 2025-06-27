@@ -36,6 +36,9 @@ Edit `.env` and provide your `API_ID`, `API_HASH`, and `OPENAI_API_KEY`.
 the built-in prompt `tg_monitor/gpt_prompt.txt` is used.
 `config.json` lists the public chats to monitor and can override the GPT model
 with a `gpt_model` field (defaults to `gpt-4o`).
+If `MAKE_WEBHOOK_URL` is set, any GPT result whose `relevance` is not
+`irrelevant` is POSTed to that URL. When the variable is missing, the
+server prints a warning and continues without Make integration.
 
 ## Running
 
