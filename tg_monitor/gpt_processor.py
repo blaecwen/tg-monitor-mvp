@@ -5,7 +5,8 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
+import logging
 
 import openai
 
@@ -13,8 +14,11 @@ DEFAULT_PROMPT_FILE = Path(__file__).with_name("gpt_prompt.txt")
 PROMPT_FILE = Path(os.environ.get("GPT_PROMPT_FILE", DEFAULT_PROMPT_FILE))
 
 _model = os.environ.get("GPT_MODEL", "gpt-4o")
+TEMPERATURE = 0
 
 _prompt_cache: str | None = None
+
+logger = logging.getLogger(__name__)
 
 
 def _load_prompt() -> str:
@@ -36,6 +40,15 @@ def get_gpt_model() -> str:
     return _model
 
 
+def get_gpt_summary() -> str:
+    """Return a one-line summary of GPT settings."""
+    key_state = "present" if os.environ.get("OPENAI_API_KEY") else "missing"
+    return (
+        f"model={_model}, temperature={TEMPERATURE}, "
+        f"prompt_file={PROMPT_FILE}, api_key={key_state}"
+    )
+
+
 _client: openai.AsyncOpenAI | None = None
 
 
@@ -49,8 +62,11 @@ def _get_client() -> openai.AsyncOpenAI:
     return _client
 
 
-async def process_text_with_gpt(text: str) -> dict[str, Any]:
-    """Process text with GPT and return structured JSON."""
+async def process_text_with_gpt(text: str) -> Optional[dict[str, Any]]:
+    """Process text with GPT and return structured JSON.
+
+    Returns ``None`` if parsing fails or the API request errors.
+    """
 
     client = _get_client()
     prompt = _load_prompt().replace("{{text}}", text)
@@ -58,11 +74,15 @@ async def process_text_with_gpt(text: str) -> dict[str, Any]:
         resp = await client.chat.completions.create(
             model=_model,
             messages=[{"role": "user", "content": prompt}],
-            temperature=0,
+            temperature=TEMPERATURE,
+            response_format={"type": "json_object"},
         )
         content = resp.choices[0].message.content
         return json.loads(content)
-    except json.JSONDecodeError:
-        return {"error": "invalid_json"}
+    except json.JSONDecodeError as exc:
+        logger.warning("failed to parse GPT response: %s", exc)
+        logger.debug("raw response: %r", content)
+        return None
     except Exception as exc:  # pragma: no cover - runtime errors
-        return {"error": str(exc)}
+        logger.warning("GPT request failed: %s", exc)
+        return None
