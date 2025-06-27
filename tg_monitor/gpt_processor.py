@@ -49,6 +49,23 @@ def get_gpt_summary() -> str:
     )
 
 
+def _strip_json_fence(text: str) -> str:
+    """Remove Markdown-style code fences from GPT output."""
+    cleaned = text.strip()
+    if cleaned.startswith("```"):
+        # remove opening fence and optional language hint
+        end = cleaned.find('\n')
+        if end != -1:
+            fence = cleaned[:end]
+            if fence.startswith("```json"):
+                cleaned = cleaned[end + 1 :]
+            else:
+                cleaned = cleaned[len("```") :]
+        if cleaned.endswith("```"):
+            cleaned = cleaned[: -3]
+    return cleaned.strip()
+
+
 _client: openai.AsyncOpenAI | None = None
 
 
@@ -77,6 +94,7 @@ async def process_text_with_gpt(text: str) -> Optional[dict[str, Any]]:
             temperature=TEMPERATURE,
         )
         content = resp.choices[0].message.content
+        content = _strip_json_fence(content)
         return json.loads(content)
     except json.JSONDecodeError as exc:
         logger.warning("failed to parse GPT response: %s", exc)
