@@ -12,6 +12,8 @@ import openai
 DEFAULT_PROMPT_FILE = Path(__file__).with_name("gpt_prompt.txt")
 PROMPT_FILE = Path(os.environ.get("GPT_PROMPT_FILE", DEFAULT_PROMPT_FILE))
 
+_model = os.environ.get("GPT_MODEL", "gpt-3.5-turbo")
+
 _prompt_cache: str | None = None
 
 
@@ -21,6 +23,17 @@ def _load_prompt() -> str:
         with PROMPT_FILE.open(encoding="utf-8") as f:
             _prompt_cache = f.read()
     return _prompt_cache
+
+
+def set_gpt_model(name: str) -> None:
+    """Override the GPT model used for completions."""
+    global _model
+    _model = name
+
+
+def get_gpt_model() -> str:
+    """Return the GPT model currently in use."""
+    return _model
 
 
 _client: openai.AsyncOpenAI | None = None
@@ -43,7 +56,7 @@ async def process_text_with_gpt(text: str) -> dict[str, Any]:
     prompt = _load_prompt().replace("{{text}}", text)
     try:
         resp = await client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model=_model,
             messages=[{"role": "user", "content": prompt}],
             temperature=0,
         )
