@@ -53,3 +53,12 @@ GPT logging handler logs the selected model when the server starts and writes
 only successful JSON results. Any parsing or API errors are logged as warnings.
 All runtime files, including the Telethon session and the JSON dump, are stored
 in the `runtime/` directory.
+
+## Logging levels
+
+- **ERROR**: critical issues affecting server performance
+- **WARNING**: recoverable problems with individual messages
+- **INFO**: key configuration or state changes, avoid spamming
+- **DEBUG**: additional details useful when debugging
+
+A `robots.txt` file disables indexing of the `runtime/` directory.
