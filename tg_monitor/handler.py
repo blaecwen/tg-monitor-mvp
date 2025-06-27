@@ -58,6 +58,11 @@ class GPTLoggingHandler(BaseMessageHandler):
 
         for m in messages:
             result = await process_text_with_gpt(m.text or "")
+            if result is None:
+                logger.warning(
+                    "GPT processing failed for chat %s message %s", chat, m.id
+                )
+                continue
             record = {
                 "chat": chat,
                 "message_id": m.id,
