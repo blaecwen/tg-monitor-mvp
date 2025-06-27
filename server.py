@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from tg_monitor.config import load_config
 from tg_monitor.handler import PrintMessageHandler, GPTLoggingHandler, MultiHandler
 from tg_monitor.monitor import ChatMonitor
+from tg_monitor import gpt_processor
 
 RUNTIME_DIR = Path("runtime")
 
@@ -14,6 +15,8 @@ RUNTIME_DIR = Path("runtime")
 async def main() -> None:
     load_dotenv(Path('.') / '.env')
     config = load_config()
+
+    gpt_processor.set_gpt_model(config.gpt_model)
 
     RUNTIME_DIR.mkdir(exist_ok=True)
 

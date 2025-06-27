@@ -1,4 +1,5 @@
 {
+  "gpt_model": "gpt-4o",
   "chats": [
     "public_chat_name"
   ]
