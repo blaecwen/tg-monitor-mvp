@@ -2,8 +2,9 @@
 
 This project provides a minimal Telegram monitoring server built with [Telethon](https://github.com/LonamiWebs/Telethon). It watches the public chats listed in `config.json` and forwards new messages to a pluggable handler.
 
-The default handler prints messages to stdout and writes the most recent one to
-`runtime/last_message.json` using prettified JSON. Messages from the same chat
+The default handler prints messages to stdout (showing each sender's username
+when available) and writes the most recent one to `runtime/last_message.json`
+using prettified JSON. Messages from the same chat
 are processed in the order they arrive, batching any new ones while a previous
 batch is handled. Runtime files, including the Telethon session, live inside the
 `runtime/` directory which is ignored by git.
