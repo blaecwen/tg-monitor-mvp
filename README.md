@@ -32,6 +32,8 @@ cp config.json.example config.json
 ```
 
 Edit `.env` and provide your `API_ID`, `API_HASH`, and `OPENAI_API_KEY`.
+`GPT_PROMPT_FILE` can point to a custom prompt file; it defaults to
+`tg_monitor/gpt_prompt.txt`.
 `config.json` lists the public chats to monitor.
 
 ## Running
