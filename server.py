@@ -5,7 +5,12 @@ from telethon import TelegramClient
 from dotenv import load_dotenv
 
 from tg_monitor.config import load_config
-from tg_monitor.handler import PrintMessageHandler, GPTLoggingHandler, MultiHandler
+from tg_monitor.handler import (
+    PrintMessageHandler,
+    GPTLoggingHandler,
+    MultiHandler,
+)
+from tg_monitor.make_handler import MakeWebhookHandler
 from tg_monitor.monitor import ChatMonitor
 from tg_monitor import gpt_processor
 from tg_monitor.logging import setup_logging
@@ -30,6 +35,7 @@ async def main() -> None:
     handler = MultiHandler(
         PrintMessageHandler(RUNTIME_DIR / 'last_message.json'),
         GPTLoggingHandler(RUNTIME_DIR / 'gpt_results.jsonl'),
+        MakeWebhookHandler(),
     )
 
     async with client:

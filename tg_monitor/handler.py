@@ -63,6 +63,9 @@ class GPTLoggingHandler(BaseMessageHandler):
                     "GPT processing failed for chat %s message %s", chat, m.id
                 )
                 continue
+               
+            m.gpt_result = result  # Save for later use by downstream handlers
+            
             record = {
                 "chat": chat,
                 "message_id": m.id,
