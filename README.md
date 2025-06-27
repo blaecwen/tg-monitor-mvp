@@ -7,6 +7,7 @@ The default handler prints messages to stdout and writes the most recent one to
 are processed in the order they arrive, batching any new ones while a previous
 batch is handled. Runtime files, including the Telethon session, live inside the
 `runtime/` directory which is ignored by git.
+Datetime values in the JSON dump are encoded as ISO 8601 strings.
 
 ## Setup
 
