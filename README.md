@@ -2,7 +2,10 @@
 
 This project provides a minimal Telegram monitoring server built with [Telethon](https://github.com/LonamiWebs/Telethon). It watches the public chats listed in `config.json` and forwards new messages to a pluggable handler.
 
-The default handler simply prints messages to stdout. Messages from the same chat are processed in the order they arrive, batching any new ones while a previous batch is handled.
+The default handler prints messages to stdout and writes the most recent one to
+`last_message.json` using prettified JSON. Messages from the same chat are
+processed in the order they arrive, batching any new ones while a previous batch
+is handled.
 
 ## Setup
 
