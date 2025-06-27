@@ -14,8 +14,9 @@ class BaseMessageHandler:
 
 
 class PrintMessageHandler(BaseMessageHandler):
-    def __init__(self, dump_file: Path | str = "last_message.json") -> None:
+    def __init__(self, dump_file: Path | str = Path("runtime/last_message.json")) -> None:
         self.dump_file = Path(dump_file)
+        self.dump_file.parent.mkdir(parents=True, exist_ok=True)
 
     async def handle(self, chat: str, messages: List[Message]) -> None:
         for m in messages:
