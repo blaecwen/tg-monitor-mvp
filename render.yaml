@@ -1,0 +1,7 @@
+services:
+  - type: worker
+    name: tg-monitor
+    env: python
+    branch: master
+    buildCommand: ./setup.sh
+    startCommand: python server.py

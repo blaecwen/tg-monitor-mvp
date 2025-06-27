@@ -60,3 +60,20 @@ including the
 Telethon session and the JSON dump, are stored in the `runtime/` directory.
 
 A `robots.txt` file disables indexing of the `runtime/` directory.
+
+## Deploying on Render.com
+
+The repository includes a `render.yaml` file for deploying as a Background Worker.
+Render installs dependencies via `setup.sh` and runs `python server.py`.
+
+1. Sign in to [Render](https://render.com/) and choose **New > Blueprint**.
+2. Select this repository and confirm the service settings.
+   - **Branch**: `master` (the worker redeploys on each push).
+   - **Environment**: `Python`.
+3. Set the environment variables `API_ID`, `API_HASH` and `OPENAI_API_KEY`.
+   Optional variables `GPT_PROMPT_FILE` and `MAKE_WEBHOOK_URL` can also be set.
+4. Provide a `config.json` file in the repository or upload it as a secret file.
+   Use `config.json.example` as a template.
+
+Deploying the blueprint creates a worker that automatically tracks the
+latest `master` commit.
