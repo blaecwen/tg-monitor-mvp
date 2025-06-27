@@ -1,6 +1,6 @@
 from pathlib import Path
 import asyncio
-import sys
+import logging
 from telethon import TelegramClient
 from dotenv import load_dotenv
 
@@ -8,17 +8,19 @@ from tg_monitor.config import load_config
 from tg_monitor.handler import PrintMessageHandler, GPTLoggingHandler, MultiHandler
 from tg_monitor.monitor import ChatMonitor
 from tg_monitor import gpt_processor
+from tg_monitor.logging import setup_logging
 
+logger = logging.getLogger(__name__)
 RUNTIME_DIR = Path("runtime")
 
 
 async def main() -> None:
     load_dotenv(Path('.') / '.env')
+    setup_logging()
     config = load_config()
 
     gpt_processor.set_gpt_model(config.gpt_model)
 
-    RUNTIME_DIR.mkdir(exist_ok=True)
 
     client = TelegramClient(
         str(RUNTIME_DIR / 'monitor'),
@@ -32,7 +34,7 @@ async def main() -> None:
 
     async with client:
         if not config.chats:
-            print("Error: no chats configured", file=sys.stderr)
+            logger.error("no chats configured")
             return
 
         monitors = []
@@ -41,13 +43,13 @@ async def main() -> None:
                 monitor = ChatMonitor(client, chat, handler)
                 await monitor.start()
             except ValueError as exc:
-                print(f"Error: {exc}", file=sys.stderr)
+                logger.error("%s", exc)
                 continue
             monitors.append(monitor)
-            print(f"Monitoring chat: {chat}")
+            logger.info("Monitoring chat: %s", chat)
 
         if not monitors:
-            print("Error: no valid chats to monitor", file=sys.stderr)
+            logger.error("no valid chats to monitor")
             return
 
         await client.run_until_disconnected()

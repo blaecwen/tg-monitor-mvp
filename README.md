@@ -2,7 +2,7 @@
 
 This project provides a minimal Telegram monitoring server built with [Telethon](https://github.com/LonamiWebs/Telethon). It watches the public chats listed in `config.json` and forwards new messages to a pluggable handler.
 
-The default handler prints messages to stdout and writes the most recent one to
+The default handler logs messages to the console and writes the most recent one to
 `runtime/last_message.json` using prettified JSON. A second handler processes
 each message with an OpenAI GPT model and appends the generated JSON
 to `runtime/gpt_results.jsonl`. Messages from the same chat are processed in the
@@ -45,5 +45,12 @@ Start the monitoring server:
 python server.py
 ```
 
-The server is non‑interactive. It prints errors to stderr when a configured chat is not found and skips it. If no valid chats remain, the server exits with an error.
-The GPT logging handler prints the selected model when the server starts. All runtime files, including the Telethon session and the JSON dump, are stored in the `runtime/` directory.
+The server is non‑interactive. Messages and errors are logged to the console and
+`runtime/server.log`. When a configured chat cannot be found, the error is
+logged and the server continues. If no valid chats remain, the server exits with
+an error. The GPT logging handler logs the selected model when the server starts
+and writes only successful JSON results. Any parsing or API errors are logged as
+warnings. All runtime files, including the Telethon session and the JSON dump,
+are stored in the `runtime/` directory.
+
+A `robots.txt` file disables indexing of the `runtime/` directory.

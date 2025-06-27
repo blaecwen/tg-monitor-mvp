@@ -1,7 +1,10 @@
 from typing import List
 from pathlib import Path
 import json
+import logging
 from telethon.tl.custom.message import Message
+
+logger = logging.getLogger(__name__)
 
 
 class BaseMessageHandler:
@@ -33,7 +36,7 @@ class PrintMessageHandler(BaseMessageHandler):
         for m in messages:
             sender = await m.get_sender()
             username = getattr(sender, "username", None) if sender else None
-            print(f"[{chat}] {username or m.sender_id}: {m.text}")
+            logger.info("[%s] %s: %s", chat, username or m.sender_id, m.text)
 
         last = messages[-1]
         with self.dump_file.open("w", encoding="utf-8") as f:
@@ -48,13 +51,18 @@ class GPTLoggingHandler(BaseMessageHandler):
         self.log_file = Path(log_file)
         self.log_file.parent.mkdir(parents=True, exist_ok=True)
         from .gpt_processor import get_gpt_model
-        print(f"Using GPT model: {get_gpt_model()}")
+        logger.info("Using GPT model: %s", get_gpt_model())
 
     async def handle(self, chat: str, messages: List[Message]) -> None:
         from .gpt_processor import process_text_with_gpt
 
         for m in messages:
             result = await process_text_with_gpt(m.text or "")
+            if result is None:
+                logger.warning(
+                    "GPT processing failed for chat %s message %s", chat, m.id
+                )
+                continue
             record = {
                 "chat": chat,
                 "message_id": m.id,

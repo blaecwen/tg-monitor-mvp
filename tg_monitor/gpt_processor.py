@@ -5,7 +5,8 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
+import logging
 
 import openai
 
@@ -15,6 +16,8 @@ PROMPT_FILE = Path(os.environ.get("GPT_PROMPT_FILE", DEFAULT_PROMPT_FILE))
 _model = os.environ.get("GPT_MODEL", "gpt-4o")
 
 _prompt_cache: str | None = None
+
+logger = logging.getLogger(__name__)
 
 
 def _load_prompt() -> str:
@@ -49,8 +52,11 @@ def _get_client() -> openai.AsyncOpenAI:
     return _client
 
 
-async def process_text_with_gpt(text: str) -> dict[str, Any]:
-    """Process text with GPT and return structured JSON."""
+async def process_text_with_gpt(text: str) -> Optional[dict[str, Any]]:
+    """Process text with GPT and return structured JSON.
+
+    Returns ``None`` if parsing fails or the API request errors.
+    """
 
     client = _get_client()
     prompt = _load_prompt().replace("{{text}}", text)
@@ -62,7 +68,9 @@ async def process_text_with_gpt(text: str) -> dict[str, Any]:
         )
         content = resp.choices[0].message.content
         return json.loads(content)
-    except json.JSONDecodeError:
-        return {"error": "invalid_json"}
+    except json.JSONDecodeError as exc:
+        logger.warning("failed to parse GPT response: %s", exc)
+        return None
     except Exception as exc:  # pragma: no cover - runtime errors
-        return {"error": str(exc)}
+        logger.warning("GPT request failed: %s", exc)
+        return None
