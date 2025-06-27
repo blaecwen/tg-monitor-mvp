@@ -14,6 +14,7 @@ DEFAULT_PROMPT_FILE = Path(__file__).with_name("gpt_prompt.txt")
 PROMPT_FILE = Path(os.environ.get("GPT_PROMPT_FILE", DEFAULT_PROMPT_FILE))
 
 _model = os.environ.get("GPT_MODEL", "gpt-4o")
+TEMPERATURE = 0
 
 _prompt_cache: str | None = None
 
@@ -37,6 +38,15 @@ def set_gpt_model(name: str) -> None:
 def get_gpt_model() -> str:
     """Return the GPT model currently in use."""
     return _model
+
+
+def get_gpt_summary() -> str:
+    """Return a one-line summary of GPT settings."""
+    key_state = "present" if os.environ.get("OPENAI_API_KEY") else "missing"
+    return (
+        f"model={_model}, temperature={TEMPERATURE}, "
+        f"prompt_file={PROMPT_FILE}, api_key={key_state}"
+    )
 
 
 _client: openai.AsyncOpenAI | None = None
@@ -64,12 +74,13 @@ async def process_text_with_gpt(text: str) -> Optional[dict[str, Any]]:
         resp = await client.chat.completions.create(
             model=_model,
             messages=[{"role": "user", "content": prompt}],
-            temperature=0,
+            temperature=TEMPERATURE,
         )
         content = resp.choices[0].message.content
         return json.loads(content)
     except json.JSONDecodeError as exc:
         logger.warning("failed to parse GPT response: %s", exc)
+        logger.debug("raw response: %r", content)
         return None
     except Exception as exc:  # pragma: no cover - runtime errors
         logger.warning("GPT request failed: %s", exc)
