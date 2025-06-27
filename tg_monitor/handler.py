@@ -31,12 +31,16 @@ class PrintMessageHandler(BaseMessageHandler):
 
     async def handle(self, chat: str, messages: List[Message]) -> None:
         for m in messages:
-            print(f"[{chat}] {m.sender_id}: {m.text}")
-            with self.dump_file.open("w", encoding="utf-8") as f:
-                json.dump(m.to_dict(), f, indent=2, ensure_ascii=False, default=str)
-                f.write("\n")
+            sender = await m.get_sender()
+            username = getattr(sender, "username", None) if sender else None
+            print(f"[{chat}] {username or m.sender_id}: {m.text}")
 
+        last = messages[-1]
+        with self.dump_file.open("w", encoding="utf-8") as f:
+            json.dump(last.to_dict(), f, indent=2, ensure_ascii=False, default=str)
+            f.write("\n")
 
+            
 class GPTLoggingHandler(BaseMessageHandler):
     """Handler that processes messages with GPT and logs JSON results."""
 
