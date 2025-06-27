@@ -62,5 +62,5 @@ Expected output:
 
 The actual message I want you to analyze is below
 --------- Message Start ---------
-{{1.message.text}}
+{{text}}
 --------- Message End ---------

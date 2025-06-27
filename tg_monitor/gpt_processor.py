@@ -40,7 +40,7 @@ async def process_text_with_gpt(text: str) -> dict[str, Any]:
     """Process text with GPT and return structured JSON."""
 
     client = _get_client()
-    prompt = _load_prompt().replace("{{1.message.text}}", text)
+    prompt = _load_prompt().replace("{{text}}", text)
     try:
         resp = await client.chat.completions.create(
             model="gpt-3.5-turbo",
