@@ -8,13 +8,17 @@ from tg_monitor.config import load_config
 from tg_monitor.handler import PrintMessageHandler
 from tg_monitor.monitor import ChatMonitor
 
+RUNTIME_DIR = Path("runtime")
+
 
 async def main() -> None:
     load_dotenv(Path('.') / '.env')
     config = load_config()
 
-    client = TelegramClient('monitor', config.api_id, config.api_hash)
-    handler = PrintMessageHandler()
+    RUNTIME_DIR.mkdir(exist_ok=True)
+
+    client = TelegramClient(str(RUNTIME_DIR / 'monitor'), config.api_id, config.api_hash)
+    handler = PrintMessageHandler(RUNTIME_DIR / 'last_message.json')
 
     async with client:
         if not config.chats:

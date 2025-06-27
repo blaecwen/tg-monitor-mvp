@@ -195,3 +195,4 @@ cython_debug/
 .cursorindexingignore
 # Telethon session files
 *.session
+runtime/
