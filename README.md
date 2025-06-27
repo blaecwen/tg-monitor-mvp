@@ -50,9 +50,10 @@ The server is non‑interactive. Messages and errors are logged to the console a
 logged and the server continues. If no valid chats remain, the server exits with
 an error. When the server starts the GPT logging handler prints a one-line
 summary of the GPT settings (model, temperature and prompt file) and writes only
-successful JSON results. The processor removes Markdown code fences from GPT
-replies before parsing. Any parsing or API errors are logged as warnings and
-include the raw response at the debug level. All runtime files, including the
+successful JSON results. GPT responses use the API's JSON mode, so the content
+is returned directly as a JSON object. Any parsing or API errors are logged as
+warnings and include the raw response at the debug level. All runtime files,
+including the
 Telethon session and the JSON dump, are stored in the `runtime/` directory.
 
 A `robots.txt` file disables indexing of the `runtime/` directory.
