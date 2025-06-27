@@ -1,50 +1,38 @@
 # tg-monitor-mvp
 
-This repository contains the initial building blocks for a future Telegram monitoring server. It currently includes small experiments with [Telethon](https://github.com/LonamiWebs/Telethon).
+This project provides a minimal Telegram monitoring server built with [Telethon](https://github.com/LonamiWebs/Telethon). It watches the public chats listed in `config.json` and forwards new messages to a pluggable handler.
 
-## Hello Telethon
+The default handler simply prints messages to stdout. Messages from the same chat are processed in the order they arrive, batching any new ones while a previous batch is handled.
 
-A simple example script `hello.py` demonstrates sending a `"Hello, Telegram!"` message to your own account.
+## Setup
 
-### Usage
+Install dependencies inside a virtual environment:
 
-First, run the setup script to create a virtual environment and install the required packages:
-
-```shell
+```sh
 sh setup.sh
 ```
 
-After installation, activate the virtual environment. If you use **Bash** run:
+Activate the environment (Bash example):
 
-```bash
+```sh
 source .venv/bin/activate
 ```
 
-For **Fish** run:
+Copy the example configuration files and fill in the required values:
 
-```fish
-source .venv/bin/activate.fish
-```
-
-Next, obtain your `API_ID` and `API_HASH` from [my.telegram.org](https://my.telegram.org) and store them in a `.env` file. Start by copying the example:
-
-```shell
+```sh
 cp .env.example .env
+cp config.json.example config.json
 ```
 
-Edit `.env` and fill in your credentials:
+Edit `.env` and provide your `API_ID` and `API_HASH` from [my.telegram.org](https://my.telegram.org). `config.json` lists the public chats to monitor.
 
-```env
-API_ID=12345
-API_HASH=your_api_hash
+## Running
+
+Start the monitoring server:
+
+```sh
+python server.py
 ```
 
-The example script automatically loads these variables from `.env` when run. It will exit with an error if either value is missing.
-
-Finally, run the example script:
-
-```shell
-python hello.py
-```
-
-The script itself is non-interactive. Telethon may still prompt you to sign in on first use. Afterwards a message is sent to your **Saved Messages**.
+The server is non‑interactive. It prints errors to stderr when a configured chat is not found and skips it. If no valid chats remain, the server exits with an error.
