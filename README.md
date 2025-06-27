@@ -46,19 +46,11 @@ python server.py
 ```
 
 The server is non‑interactive. Messages and errors are logged to the console and
-`runtime/server.log`. Set the `LOG_LEVEL` environment variable to control the
-verbosity. When a configured chat cannot be found, the error is logged and the
-server continues. If no valid chats remain, the server exits with an error. The
-GPT logging handler logs the selected model when the server starts and writes
-only successful JSON results. Any parsing or API errors are logged as warnings.
-All runtime files, including the Telethon session and the JSON dump, are stored
-in the `runtime/` directory.
-
-## Logging levels
-
-- **ERROR**: critical issues affecting server performance
-- **WARNING**: recoverable problems with individual messages
-- **INFO**: key configuration or state changes, avoid spamming
-- **DEBUG**: additional details useful when debugging
+`runtime/server.log`. When a configured chat cannot be found, the error is
+logged and the server continues. If no valid chats remain, the server exits with
+an error. The GPT logging handler logs the selected model when the server starts
+and writes only successful JSON results. Any parsing or API errors are logged as
+warnings. All runtime files, including the Telethon session and the JSON dump,
+are stored in the `runtime/` directory.
 
 A `robots.txt` file disables indexing of the `runtime/` directory.
