@@ -5,7 +5,7 @@ from telethon import TelegramClient
 from dotenv import load_dotenv
 
 from tg_monitor.config import load_config
-from tg_monitor.handler import PrintMessageHandler
+from tg_monitor.handler import PrintMessageHandler, GPTLoggingHandler, MultiHandler
 from tg_monitor.monitor import ChatMonitor
 
 RUNTIME_DIR = Path("runtime")
@@ -17,8 +17,15 @@ async def main() -> None:
 
     RUNTIME_DIR.mkdir(exist_ok=True)
 
-    client = TelegramClient(str(RUNTIME_DIR / 'monitor'), config.api_id, config.api_hash)
-    handler = PrintMessageHandler(RUNTIME_DIR / 'last_message.json')
+    client = TelegramClient(
+        str(RUNTIME_DIR / 'monitor'),
+        config.api_id,
+        config.api_hash,
+    )
+    handler = MultiHandler(
+        PrintMessageHandler(RUNTIME_DIR / 'last_message.json'),
+        GPTLoggingHandler(RUNTIME_DIR / 'gpt_results.jsonl'),
+    )
 
     async with client:
         if not config.chats:
