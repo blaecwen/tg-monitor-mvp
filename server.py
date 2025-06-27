@@ -17,7 +17,6 @@ async def main() -> None:
     config = load_config()
 
     gpt_processor.set_gpt_model(config.gpt_model)
-    print(f"Using GPT model: {gpt_processor.get_gpt_model()}")
 
     RUNTIME_DIR.mkdir(exist_ok=True)
 

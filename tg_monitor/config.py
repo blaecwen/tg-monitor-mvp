@@ -10,7 +10,7 @@ class AppConfig:
     api_id: int
     api_hash: str
     chats: List[str]
-    gpt_model: str = "gpt-3.5-turbo"
+    gpt_model: str = "gpt-4o"
 
 
 def load_config(path: Path | str = "config.json") -> AppConfig:
@@ -19,7 +19,7 @@ def load_config(path: Path | str = "config.json") -> AppConfig:
         data = json.load(f)
 
     chats = data.get("chats", [])
-    gpt_model = data.get("gpt_model", "gpt-3.5-turbo")
+    gpt_model = data.get("gpt_model", "gpt-4o")
 
     api_id = os.environ.get("API_ID")
     api_hash = os.environ.get("API_HASH")

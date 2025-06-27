@@ -12,7 +12,7 @@ import openai
 DEFAULT_PROMPT_FILE = Path(__file__).with_name("gpt_prompt.txt")
 PROMPT_FILE = Path(os.environ.get("GPT_PROMPT_FILE", DEFAULT_PROMPT_FILE))
 
-_model = os.environ.get("GPT_MODEL", "gpt-3.5-turbo")
+_model = os.environ.get("GPT_MODEL", "gpt-4o")
 
 _prompt_cache: str | None = None
 
