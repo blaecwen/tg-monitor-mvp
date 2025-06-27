@@ -4,7 +4,7 @@ This project provides a minimal Telegram monitoring server built with [Telethon]
 
 The default handler prints messages to stdout and writes the most recent one to
 `runtime/last_message.json` using prettified JSON. A second handler processes
-each message with a GPT model (stubbed for now) and appends the generated JSON
+each message with an OpenAI GPT model and appends the generated JSON
 to `runtime/gpt_results.jsonl`. Messages from the same chat are processed in the
 order they arrive, batching any new ones while a previous batch is handled.
 Runtime files, including the Telethon session, live inside the `runtime/`
@@ -31,7 +31,8 @@ cp .env.example .env
 cp config.json.example config.json
 ```
 
-Edit `.env` and provide your `API_ID` and `API_HASH` from [my.telegram.org](https://my.telegram.org). `config.json` lists the public chats to monitor.
+Edit `.env` and provide your `API_ID`, `API_HASH`, and `OPENAI_API_KEY`.
+`config.json` lists the public chats to monitor.
 
 ## Running
 
