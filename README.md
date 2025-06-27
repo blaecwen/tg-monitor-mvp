@@ -48,9 +48,12 @@ python server.py
 The server is non‑interactive. Messages and errors are logged to the console and
 `runtime/server.log`. When a configured chat cannot be found, the error is
 logged and the server continues. If no valid chats remain, the server exits with
-an error. The GPT logging handler logs the selected model when the server starts
-and writes only successful JSON results. Any parsing or API errors are logged as
-warnings. All runtime files, including the Telethon session and the JSON dump,
-are stored in the `runtime/` directory.
+an error. When the server starts the GPT logging handler prints a one-line
+summary of the GPT settings (model, temperature and prompt file) and writes only
+successful JSON results. GPT responses use the API's JSON mode, so the content
+is returned directly as a JSON object. Any parsing or API errors are logged as
+warnings and include the raw response at the debug level. All runtime files,
+including the
+Telethon session and the JSON dump, are stored in the `runtime/` directory.
 
 A `robots.txt` file disables indexing of the `runtime/` directory.

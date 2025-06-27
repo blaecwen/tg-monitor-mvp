@@ -50,8 +50,8 @@ class GPTLoggingHandler(BaseMessageHandler):
     def __init__(self, log_file: Path | str = Path("runtime/gpt_results.jsonl")) -> None:
         self.log_file = Path(log_file)
         self.log_file.parent.mkdir(parents=True, exist_ok=True)
-        from .gpt_processor import get_gpt_model
-        logger.info("Using GPT model: %s", get_gpt_model())
+        from .gpt_processor import get_gpt_summary
+        logger.info("GPT settings: %s", get_gpt_summary())
 
     async def handle(self, chat: str, messages: List[Message]) -> None:
         from .gpt_processor import process_text_with_gpt
