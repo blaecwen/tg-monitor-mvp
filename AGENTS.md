@@ -13,3 +13,12 @@ This repository hosts a minimal Telegram monitoring server built with Telethon. 
   a console handler and a rotating file handler at ``runtime/server.log``.
   Adjust verbosity with the ``LOG_LEVEL`` environment variable
   (``ERROR``, ``WARNING``, ``INFO``, ``DEBUG``).
+  Use the following guidelines for log levels:
+  * **ERROR** – critical issues that severely impact the server's
+    operation and typically cause a failure.
+  * **WARNING** – recoverable problems affecting individual messages or
+    other situations that require attention but don't stop the server.
+  * **INFO** – normal operational messages and important state changes;
+    avoid excessive repetition to keep logs readable.
+  * **DEBUG** – verbose output useful when diagnosing problems. This
+    level may include repetitive messages.
